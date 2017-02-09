@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>ContentBar</title>
+  <meta name="description" content="">
+  <meta name="author" content="Rouan van der Ende (bitlab.io)">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <script type="text/javascript" src="jquery-3.1.1.min.js"></script>
+  <script type="text/javascript">
+
+//http://tile.openstreetmap.org/7/63/42.png">
+//http://tile.openstreetmap.org/zoom/x/y.png">
+
+//zoom levels = 0-19
+
+/*
+var gpsToTile = function(gps, zoom) {
+  var tile = {}
+  //Given Longitude/latitude/zoom to tile numbers :
+  var n = 2 ^ zoom
+  tile.x = n * ((gps.lon + 180) / 360)
+  tile.y = n * (1 - (log(tan(lat_rad) + sec(lat_rad)) / π)) / 2  
+}
+
+var tileToGps = function(tile, zoom) {
+  //Given Tile numbers to longitude/latitude :
+  n = 2 ^ zoom
+  gps.lon = tile.x / n * 360.0 - 180.0
+  lat_rad = arctan(sinh(π * (1 - 2 * tile.y / n)))
+  lat_deg = lat_rad * 180.0 / π  
+}
+*/
+
+
+ 
+
+var gpsToTile = function(gps, zoom) {
+  var tile = {}
+  
+  var n = Math.pow(2,zoom);
+  tile.x = Math.floor(n * ((gps.lon + 180) / 360));
+  
+
+  //tile.y = n * (1 - (log(tan(lat_rad) + sec(lat_rad)) / π)) / 2
+
+  tile.y = Math.floor((1-Math.log(Math.tan(gps.lat*Math.PI/180) + 1/Math.cos(gps.lat*Math.PI/180))/Math.PI)/2 * n) 
+
+  return tile
+ }
+
+
+    $( document ).ready(function() {
+      console.log( "ready!" );
+
+
+
+      
+      var zoom = 16;
+      var tile = gpsToTile({lon:27.9974774, lat: -26.0196367}, zoom)
+      console.log(tile)
+      
+      $("#map").html('<img src="http://tile.openstreetmap.org/'+zoom+'/'+tile.x+'/'+tile.y+'.png">')
+    });
+
+
+    $( window ).resize(function() {
+      console.log( "resize!" );
+    });
+
+
+  </script>
+
+<style type="text/css">
+
+
+</style>
+
+</head>
+
+<body >
+
+<div id="map" style="width: 2000px; height: 1000px; background: rgba(33,33,33,1); cursor: crosshair;">
+</div>
+
+
+
+
+
+</body>
+</html>
