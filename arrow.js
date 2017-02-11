@@ -14,7 +14,7 @@ var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
 
 var mongojs = require('mongojs')
-var db = mongojs(client.mongodb,client.mongocollections)
+var db = mongojs(cfg.mongodb,cfg.mongocollections)
 var cookieParser = require('cookie-parser')
 var session = require('cookie-session')
 app.use(bodyParser.json());
@@ -48,3 +48,7 @@ app.get('/contact', (req, res) => {
 app.get('/about', (req, res) => {
   res.sendFile(path.join(__dirname+'/public/about.html'));  
 })
+
+app.listen(80, function () {
+  console.log('Server listening...');
+});
